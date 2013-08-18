@@ -3,8 +3,10 @@
 
      geom_cast
 
+     convert between different point and rotation types used throughout ROS.
+
   </description>
-  <author>aeroscout</author>
+  <author>Daniel Maturana (dimatura@cmu.edu)</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/geom_cast</url>
