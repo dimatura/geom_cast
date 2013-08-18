@@ -24,18 +24,23 @@ namespace detail
 ///////////////////////////////////////////////////////////////////////////////
 // point set/get traits
 
+// for pcl, geometry_msg
 template<typename T>
 struct xyz_member_getset : public boost::false_type { };
 
+// for eigen, arrays
 template<typename T>
 struct xyz_array_getset : public boost::false_type { };
 
+// for tf::vector3 (which is a btvector)
 template<typename T>
 struct xyz_ctor_set : public boost::false_type { };
 
+// for tf::vector3 (which is a btvector)
 template<typename T>
 struct xyz_tfget_get : public boost::false_type { };
 
+// for raw arrays, pointers
 template<typename T>
 struct xyz_array_get : public boost::false_type { };
 

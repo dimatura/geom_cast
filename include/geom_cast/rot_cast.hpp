@@ -168,7 +168,6 @@ Target rot_cast(const Source& src,
                 typename boost::enable_if< detail::rot_quat_fun_member_get<Source> >::type* dummy1 = 0,
                 typename boost::enable_if< detail::rot_quat_fun_member_getset<Target> >::type* dummy2 = 0
                ) {
-  const tf::Vector3& axis(src.getAxis());
   Target tgt;
   tgt.x() = src.x();
   tgt.y() = src.y();
