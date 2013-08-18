@@ -5,6 +5,7 @@
 #include <boost/type_traits/integral_constant.hpp>
 
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 #include <geometry_msgs/Quaternion.h>
 
@@ -26,7 +27,17 @@ template<typename T>
 struct rot_quat_fun_member_getset : public boost::false_type { };
 
 template<typename T>
+struct rot_quat_fun_member_get : public boost::false_type { };
+
+template<typename T>
 struct rot_quat_xyzw_array_getset : public boost::false_type { };
+
+template<typename T>
+struct rot_quat_xyzw_ctor_set : public boost::false_type { };
+
+// for the tf/bt quaternion type
+//template<typename T>
+//struct rot_quat_tf_quat_get : public boost::false_type { };
 
 ///////////////////////////////////////////////////////////////////////////////
 // implementations
@@ -39,7 +50,16 @@ struct rot_quat_member_getset<geometry_msgs::Quaternion> : public boost::true_ty
 template<class Scalar>
 struct rot_quat_fun_member_getset<Eigen::Quaternion<Scalar> > : public boost::true_type { };
 
-}
+// tf/bt
+template<>
+struct rot_quat_xyzw_ctor_set<tf::Quaternion> : public boost::true_type { };
+
+//template<>
+//struct rot_quat_tf_quat_get<tf::Quaternion> : public boost::true_type { };
+template<>
+struct rot_quat_fun_member_get<tf::Quaternion> : public boost::true_type { };
+
+} // detail
 
 template<typename Target, typename Source>
 Target rot_cast(const Source& src,
@@ -106,7 +126,56 @@ Target rot_cast(const Source& src,
   return tgt;
 }
 
+template<typename Target, typename Source>
+Target rot_cast(const Source& src,
+                typename boost::enable_if< detail::rot_quat_fun_member_getset<Source> >::type* dummy1 = 0,
+                typename boost::enable_if< detail::rot_quat_xyzw_ctor_set<Target> >::type* dummy2 = 0
+               ) {
+  return Target(src.x(), src.y(), src.z(), src.w());
+}
 
+template<typename Target, typename Source>
+Target rot_cast(const Source& src,
+                typename boost::enable_if< detail::rot_quat_member_getset<Source> >::type* dummy1 = 0,
+                typename boost::enable_if< detail::rot_quat_xyzw_ctor_set<Target> >::type* dummy2 = 0
+               ) {
+  return Target(src.x, src.y, src.z, src.w);
+}
+
+template<typename Target, typename Source>
+Target rot_cast(const Source& src,
+                typename boost::enable_if< detail::rot_quat_fun_member_get<Source> >::type* dummy1 = 0,
+                typename boost::enable_if< detail::rot_quat_xyzw_ctor_set<Target> >::type* dummy2 = 0
+               ) {
+  return Target(src.x(), src.y(), src.z(), src.w());
+}
+
+template<typename Target, typename Source>
+Target rot_cast(const Source& src,
+                typename boost::enable_if< detail::rot_quat_fun_member_get<Source> >::type* dummy1 = 0,
+                typename boost::enable_if< detail::rot_quat_member_getset<Target> >::type* dummy2 = 0
+               ) {
+  Target tgt;
+  tgt.x = src.x();
+  tgt.y = src.y();
+  tgt.z = src.z();
+  tgt.w = src.w();
+  return tgt;
+}
+
+template<typename Target, typename Source>
+Target rot_cast(const Source& src,
+                typename boost::enable_if< detail::rot_quat_fun_member_get<Source> >::type* dummy1 = 0,
+                typename boost::enable_if< detail::rot_quat_fun_member_getset<Target> >::type* dummy2 = 0
+               ) {
+  const tf::Vector3& axis(src.getAxis());
+  Target tgt;
+  tgt.x() = src.x();
+  tgt.y() = src.y();
+  tgt.z() = src.z();
+  tgt.w() = src.w();
+  return tgt;
+}
 
 } /* ca */
 

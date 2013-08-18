@@ -44,12 +44,18 @@ void points() {
 }
 
 void rotations() {
+  // eigen ctor is wxyz
   Eigen::Quaterniond q1(1, 0, 0, 0);
-
+  std::cerr << q1.x() << ", "<< q1.y() << ", "<< q1.z() << ", "<< q1.w() << "\n";
 
   geometry_msgs::Quaternion q2 = ca::rot_cast<geometry_msgs::Quaternion>(q1);
   std::cerr << q2.x << ", "<< q2.y << ", "<< q2.z << ", "<< q2.w << "\n";
 
+  tf::Quaternion q3 = ca::rot_cast<tf::Quaternion>(q1);
+  std::cerr << q3.x() << ", "<< q3.y() << ", "<< q3.z() << ", "<< q3.w() << "\n";
+
+  Eigen::Quaternionf q4 = ca::rot_cast<Eigen::Quaternionf>(q3);
+  std::cerr << q4.x() << ", "<< q4.y() << ", "<< q4.z() << ", "<< q4.w() << "\n";
 
 }
 
