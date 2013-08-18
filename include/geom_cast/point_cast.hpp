@@ -9,6 +9,8 @@
 #include <pcl/point_types.h>
 
 #include <geometry_msgs/Point.h>
+#include <geometry_msgs/Point32.h>
+#include <geometry_msgs/Vector3.h>
 
 #include <tf/tf.h>
 
@@ -17,6 +19,8 @@
 namespace ca
 {
 
+namespace detail
+{
 ///////////////////////////////////////////////////////////////////////////////
 // point set/get traits
 
@@ -56,14 +60,35 @@ template<>
 struct xyz_member_getset<pcl::PointXYZRGB> : public boost::true_type { };
 
 template<>
+struct xyz_member_getset<pcl::PointXYZRGBA> : public boost::true_type { };
+
+template<>
+struct xyz_member_getset<pcl::PointNormal> : public boost::true_type { };
+
+template<>
+struct xyz_member_getset<pcl::PointXYZRGBNormal> : public boost::true_type { };
+
+template<>
 struct xyz_member_getset<pcl::PointXYZL> : public boost::true_type { };
 
 template<>
 struct xyz_member_getset<pcl::PointWithViewpoint> : public boost::true_type { };
 
+template<>
+struct xyz_member_getset<pcl::PointWithRange> : public boost::true_type { };
+
+template<>
+struct xyz_member_getset<pcl::PointWithScale> : public boost::true_type { };
+
+template<>
+struct xyz_member_getset<pcl::PointSurfel> : public boost::true_type { };
+
 // geometry_msgs
 template<>
 struct xyz_member_getset<geometry_msgs::Point> : public boost::true_type { };
+
+template<>
+struct xyz_member_getset<geometry_msgs::Point32> : public boost::true_type { };
 
 template<>
 struct xyz_member_getset<geometry_msgs::Vector3> : public boost::true_type { };
@@ -95,14 +120,16 @@ struct xyz_array_getset<Scalar [3]> : public boost::true_type { };
 template<class Scalar>
 struct xyz_member_getset<cv::Point3_<Scalar> > : public boost::true_type { };
 
+} // detail
+
 ///////////////////////////////////////////////////////////////////////////////
 // non-exhaustive set of converters for various src/target combinations.
 // TODO add useful converters as needed.
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_member_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src.x;
@@ -113,8 +140,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_tfget_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_tfget_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src.getX();
@@ -125,8 +152,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src[0];
@@ -137,8 +164,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src[0];
@@ -149,8 +176,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src[0];
@@ -161,8 +188,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src[0];
@@ -173,8 +200,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_member_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src.x;
@@ -185,16 +212,16 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_member_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_ctor_set<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src.x, src.y, src.z);
 }
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_tfget_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_tfget_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src.getX();
@@ -205,24 +232,24 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_tfget_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_ctor_set<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_tfget_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src.getX(), src.getY(), src.getZ());
 }
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_ctor_set<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src[0], src[1], src[2]);
 }
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< xyz_array_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< xyz_ctor_set<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src[0], src[1], src[2]);
 }
