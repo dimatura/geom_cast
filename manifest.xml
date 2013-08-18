@@ -1,0 +1,15 @@
+<package>
+  <description brief="geom_cast">
+
+     geom_cast
+
+  </description>
+  <author>aeroscout</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/geom_cast</url>
+  <depend package="roscpp"/>
+
+</package>
+
+
