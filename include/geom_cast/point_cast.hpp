@@ -100,16 +100,28 @@ struct xyz_member_getset<geometry_msgs::Vector3> : public boost::true_type { };
 
 // eigen
 template<class Scalar>
-struct xyz_array_getset<Eigen::Matrix<Scalar, 3, 1> > : public boost::true_type { };
+struct xyz_ctor_set<Eigen::Matrix<Scalar, 3, 1> > : public boost::true_type { };
 
 template<class Scalar>
-struct xyz_array_getset<Eigen::Matrix<Scalar, 4, 1> > : public boost::true_type { };
+struct xyz_fun_member_get<Eigen::Matrix<Scalar, 3, 1> > : public boost::true_type { };
 
 template<class Scalar>
-struct xyz_array_getset<Eigen::Map<const Eigen::Matrix<Scalar, 3, 1> > > : public boost::true_type { };
+struct xyz_ctor_set<Eigen::Matrix<Scalar, 4, 1> > : public boost::true_type { };
 
 template<class Scalar>
-struct xyz_array_getset<Eigen::Map<const Eigen::Matrix<Scalar, 4, 1> > > : public boost::true_type { };
+struct xyz_fun_member_get<Eigen::Matrix<Scalar, 4, 1> > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 3, 1> > > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 3, 1> > > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 4, 1> > > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 4, 1> > > : public boost::true_type { };
 
 // raw pointer. a bit dangerous since it matches any pointer.
 // TODO restrict to numeric types. No boundary checks either.
