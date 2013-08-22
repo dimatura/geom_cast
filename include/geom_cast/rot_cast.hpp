@@ -35,10 +35,6 @@ struct rot_quat_xyzw_array_getset : public boost::false_type { };
 template<typename T>
 struct rot_quat_xyzw_ctor_set : public boost::false_type { };
 
-// for the tf/bt quaternion type
-//template<typename T>
-//struct rot_quat_tf_quat_get : public boost::false_type { };
-
 ///////////////////////////////////////////////////////////////////////////////
 // implementations
 
@@ -54,8 +50,6 @@ struct rot_quat_fun_member_getset<Eigen::Quaternion<Scalar> > : public boost::tr
 template<>
 struct rot_quat_xyzw_ctor_set<tf::Quaternion> : public boost::true_type { };
 
-//template<>
-//struct rot_quat_tf_quat_get<tf::Quaternion> : public boost::true_type { };
 template<>
 struct rot_quat_fun_member_get<tf::Quaternion> : public boost::true_type { };
 
