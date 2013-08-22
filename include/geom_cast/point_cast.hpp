@@ -51,6 +51,35 @@ template<typename T>
 struct xyz_ctor_set : public boost::false_type { };
 
 ///////////////////////////////////////////////////////////////////////////////
+// 2d point get traits
+
+// for pcl, geometry_msg
+template<typename T>
+struct xy_member_get : public boost::false_type { };
+
+// for eigen, arrays
+template<typename T>
+struct xy_array_get : public boost::false_type { };
+
+// for tf::vector3 (which is a btvector), eigen
+template<typename T>
+struct xy_fun_member_get : public boost::false_type { };
+
+///////////////////////////////////////////////////////////////////////////////
+// 2d point set traits
+
+template<typename T>
+struct xy_member_set : public boost::false_type { };
+
+// for eigen, arrays
+template<typename T>
+struct xy_array_set : public boost::false_type { };
+
+// for tf::vector3 (which is a btvector)
+template<typename T>
+struct xy_ctor_set : public boost::false_type { };
+
+///////////////////////////////////////////////////////////////////////////////
 // trait implementations for various point types
 
 // tf::Vector3
@@ -162,13 +191,7 @@ template<class Scalar>
 struct xyz_fun_member_get<Eigen::Matrix<Scalar, 4, 1> > : public boost::true_type { };
 
 template<class Scalar>
-struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 3, 1> > > : public boost::true_type { };
-
-template<class Scalar>
 struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 3, 1> > > : public boost::true_type { };
-
-template<class Scalar>
-struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 4, 1> > > : public boost::true_type { };
 
 template<class Scalar>
 struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 4, 1> > > : public boost::true_type { };
@@ -192,6 +215,36 @@ struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
 
 template<class Scalar>
 struct xyz_member_set<cv::Point3_<Scalar> > : public boost::true_type { };
+
+///////////////////////////////////////////////////////////////////////////////
+// 2D trait impl
+
+// opencv
+template<class Scalar>
+struct xy_member_get<cv::Point_<Scalar> > : public boost::true_type { };
+
+template<class Scalar>
+struct xy_member_set<cv::Point_<Scalar> > : public boost::true_type { };
+
+// pcl
+template<>
+struct xy_member_set<pcl::PointXY> : public boost::true_type { };
+
+template<>
+struct xy_member_get<pcl::PointXY> : public boost::true_type { };
+
+// eigen
+template<class Scalar>
+struct xyz_ctor_set<Eigen::Matrix<Scalar, 2, 1> > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_fun_member_get<Eigen::Matrix<Scalar, 2, 1> > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 2, 1> > > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 2, 1> > > : public boost::true_type { };
 
 
 } // detail
