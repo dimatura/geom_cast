@@ -197,23 +197,24 @@ struct xyz_member_set<cv::Point3_<Scalar> > : public boost::true_type { };
 } // detail
 
 ///////////////////////////////////////////////////////////////////////////////
-// non-exhaustive set of converters for various src/target combinations.
+// possibly non-exhaustive set of converters for various src/target combinations.
 // TODO add useful converters as needed.
 
-// 1 member_getset
-// 2 array_getset
-// 3 array_get
-// 4 ctor_set
-// 5 fun_member_get
+// get
+// 1 member_get
+// 2 array_get
+// 3 fun_member_get
+
+// set
+// 1 member_set
+// 2 array_set
+// 3 ctor_set
 
 // rows: src, cols: tgt
-//   1 2 3 4 5
-// 1 . .   .
-// 2 . .   .
-// 3 . .   .
-// 4
-// 5 . .   .
-//
+//   1 2 3
+// 1 . . .
+// 2 . . .
+// 3 . . .
 
 // TODO this could probably be automated with macros or smarter metaprogramming
 
