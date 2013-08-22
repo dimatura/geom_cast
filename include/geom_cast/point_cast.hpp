@@ -395,8 +395,53 @@ Target point_cast(const Source& src,
   return tgt;
 }
 
-// 2D-3D
+// 2D->3D
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xy_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_set<Target> >::type* dummy2 = 0) {
+  Target tgt;
+  tgt.x = src.x;
+  tgt.y = src.y;
+  tgt.z = 0;
+  return tgt;
+}
 
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xy_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0) {
+  return Target(src.x, src.y, 0);
+}
+
+// 3D->2D
+
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xyz_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_member_set<Target> >::type* dummy2 = 0) {
+  Target tgt;
+  tgt.x = src.x;
+  tgt.y = src.y;
+  return tgt;
+}
+
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xyz_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_ctor_set<Target> >::type* dummy2 = 0) {
+  return Target(src.x, src.y);
+}
+
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xyz_fun_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_member_set<Target> >::type* dummy2 = 0) {
+  Target tgt;
+  tgt.x = src.x();
+  tgt.y = src.y();
+  return tgt;
+}
 
 #if 0
 pcl::PointXYZ vector3f_to_point_xyz(Eigen::Vector3f ep) {
