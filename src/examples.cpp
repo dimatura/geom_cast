@@ -3,8 +3,26 @@
 #include "geom_cast/point_cast.hpp"
 #include "geom_cast/rot_cast.hpp"
 
-void points() {
+void points32() {
+  std::cerr << "Each line should be 2, 8\n";
 
+  Eigen::Vector3d v1(2, 8, 1);
+  std::cerr << v1.x() << ", " << v1.y() << "\n";
+
+  pcl::PointXY v2 = ca::point_cast<pcl::PointXY>(v1);
+  std::cerr << v2.x << ", " << v2.y << "\n";
+
+  pcl::PointXYZ v3(2, 8, 1);
+  pcl::PointXY v4 = ca::point_cast<pcl::PointXY>(v3);
+  std::cerr << v4.x << ", " << v4.y << "\n";
+
+  cv::Vec2d v5 = ca::point_cast<cv::Vec2d>(v1);
+  std::cerr << v5[0] << ", " << v5[1] << "\n";
+}
+
+void points3() {
+
+  std::cerr << "Each line should be 2, 8, 0\n";
   Eigen::Vector3d food(2, 8, 0);
   Eigen::Vector3f foof(2, 8, 0);
 
@@ -51,9 +69,12 @@ void points() {
 
   std::cerr << v12.x << ", " << v12.y << ", " << v12.z << "\n";
 
+  cv::Vec<double, 3> v13 = ca::point_cast<cv::Vec3d>(v4);
+  std::cerr << v13[0] << ", " << v13[1] << ", " << v13[2] << "\n";
 }
 
 void rotations() {
+  std::cerr << "Each line should be 0, 0, 0, 1\n";
   // eigen ctor is wxyz
   Eigen::Quaterniond q1(1, 0, 0, 0);
   std::cerr << q1.x() << ", "<< q1.y() << ", "<< q1.z() << ", "<< q1.w() << "\n";
@@ -71,9 +92,10 @@ void rotations() {
 
 int main(int argc, char *argv[]) {
 
-  points();
+  points3();
   std::cerr << "\n";
   rotations();
-
+  std::cerr << "\n";
+  points32();
   return 0;
 }

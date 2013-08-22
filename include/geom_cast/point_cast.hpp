@@ -216,6 +216,12 @@ struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
 template<class Scalar>
 struct xyz_member_set<cv::Point3_<Scalar> > : public boost::true_type { };
 
+template<class Scalar>
+struct xyz_array_get< cv::Vec<Scalar, 3> > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_ctor_set< cv::Vec<Scalar, 3> > : public boost::true_type { };
+
 ///////////////////////////////////////////////////////////////////////////////
 // 2D trait impl
 
@@ -225,6 +231,12 @@ struct xy_member_get<cv::Point_<Scalar> > : public boost::true_type { };
 
 template<class Scalar>
 struct xy_member_set<cv::Point_<Scalar> > : public boost::true_type { };
+
+template<class Scalar>
+struct xy_array_get<cv::Vec<Scalar, 2> > : public boost::true_type { };
+
+template<class Scalar>
+struct xy_ctor_set< cv::Vec<Scalar, 2> > : public boost::true_type { };
 
 // pcl
 template<>
@@ -443,6 +455,12 @@ Target point_cast(const Source& src,
   return tgt;
 }
 
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xyz_fun_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_ctor_set<Target> >::type* dummy2 = 0) {
+  return Target(src.x(), src.y());
+}
 #if 0
 pcl::PointXYZ vector3f_to_point_xyz(Eigen::Vector3f ep) {
   pcl::PointXYZ p;
