@@ -42,7 +42,7 @@ struct xyz_fun_member_get : public boost::false_type { };
 template<typename T>
 struct xyz_member_set : public boost::false_type { };
 
-// for eigen, arrays
+// for arrays
 template<typename T>
 struct xyz_array_set : public boost::false_type { };
 
@@ -57,7 +57,7 @@ struct xyz_ctor_set : public boost::false_type { };
 template<typename T>
 struct xy_member_get : public boost::false_type { };
 
-// for eigen, arrays
+// for arrays
 template<typename T>
 struct xy_array_get : public boost::false_type { };
 
@@ -366,6 +366,37 @@ Target point_cast(const Source& src,
                  ) {
   return Target(src[0], src[1], src[2]);
 }
+
+// 2D-2D
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xy_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_member_set<Target> >::type* dummy2 = 0) {
+  Target tgt;
+  tgt.x = src.x;
+  tgt.y = src.y;
+  return tgt;
+}
+
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xy_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_ctor_set<Target> >::type* dummy2 = 0) {
+  return Target(src.x, src.y);
+}
+
+template<typename Target, typename Source>
+Target point_cast(const Source& src,
+                  typename boost::enable_if< detail::xy_fun_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xy_member_set<Target> >::type* dummy2 = 0) {
+  Target tgt;
+  tgt.x = src.x();
+  tgt.y = src.y();
+  return tgt;
+}
+
+// 2D-3D
+
 
 #if 0
 pcl::PointXYZ vector3f_to_point_xyz(Eigen::Vector3f ep) {
