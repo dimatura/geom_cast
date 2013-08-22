@@ -32,6 +32,10 @@ struct xyz_member_getset : public boost::false_type { };
 template<typename T>
 struct xyz_array_getset : public boost::false_type { };
 
+// for raw arrays, pointers
+template<typename T>
+struct xyz_array_get : public boost::false_type { };
+
 // for tf::vector3 (which is a btvector)
 template<typename T>
 struct xyz_ctor_set : public boost::false_type { };
@@ -39,10 +43,6 @@ struct xyz_ctor_set : public boost::false_type { };
 // for tf::vector3 (which is a btvector), eigen
 template<typename T>
 struct xyz_fun_member_get : public boost::false_type { };
-
-// for raw arrays, pointers
-template<typename T>
-struct xyz_array_get : public boost::false_type { };
 
 ///////////////////////////////////////////////////////////////////////////////
 // trait implementations for various point types
@@ -143,11 +143,20 @@ struct xyz_member_getset<cv::Point3_<Scalar> > : public boost::true_type { };
 // non-exhaustive set of converters for various src/target combinations.
 // TODO add useful converters as needed.
 
-// member_getset
-// array_getset
-// ctor_set
-// tfget_get
-// array_get
+// 1 member_getset
+// 2 array_getset
+// 3 array_get
+// 4 ctor_set
+// 5 fun_member_get
+
+// rows: src, cols: tgt
+//   1 2 3 4 5
+// 1 . .   .
+// 2 . .   .
+// 3 . .   .
+// 4
+// 5 . .   .
+//
 
 // TODO this could probably be automated with macros or smarter metaprogramming
 
