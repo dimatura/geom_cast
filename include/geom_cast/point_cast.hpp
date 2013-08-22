@@ -22,27 +22,33 @@ namespace ca
 namespace detail
 {
 ///////////////////////////////////////////////////////////////////////////////
-// point set/get traits
+// point get traits
 
 // for pcl, geometry_msg
 template<typename T>
-struct xyz_member_getset : public boost::false_type { };
+struct xyz_member_get : public boost::false_type { };
 
 // for eigen, arrays
 template<typename T>
-struct xyz_array_getset : public boost::false_type { };
-
-// for raw arrays, pointers
-template<typename T>
 struct xyz_array_get : public boost::false_type { };
-
-// for tf::vector3 (which is a btvector)
-template<typename T>
-struct xyz_ctor_set : public boost::false_type { };
 
 // for tf::vector3 (which is a btvector), eigen
 template<typename T>
 struct xyz_fun_member_get : public boost::false_type { };
+
+///////////////////////////////////////////////////////////////////////////////
+// point set traits
+// for pcl, geometry_msg
+template<typename T>
+struct xyz_member_set : public boost::false_type { };
+
+// for eigen, arrays
+template<typename T>
+struct xyz_array_set : public boost::false_type { };
+
+// for tf::vector3 (which is a btvector)
+template<typename T>
+struct xyz_ctor_set : public boost::false_type { };
 
 ///////////////////////////////////////////////////////////////////////////////
 // trait implementations for various point types
@@ -54,49 +60,93 @@ struct xyz_fun_member_get<tf::Vector3> : public boost::true_type { };
 template<>
 struct xyz_ctor_set<tf::Vector3> : public boost::true_type { };
 
-// pcl
+// pcl get
 template<>
-struct xyz_member_getset<pcl::PointXYZ> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZ> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointXYZI> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZI> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointXYZRGB> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZRGB> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointXYZRGBA> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZRGBA> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointNormal> : public boost::true_type { };
+struct xyz_member_get<pcl::PointNormal> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointXYZRGBNormal> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZRGBNormal> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointXYZL> : public boost::true_type { };
+struct xyz_member_get<pcl::PointXYZL> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointWithViewpoint> : public boost::true_type { };
+struct xyz_member_get<pcl::PointWithViewpoint> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointWithRange> : public boost::true_type { };
+struct xyz_member_get<pcl::PointWithRange> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointWithScale> : public boost::true_type { };
+struct xyz_member_get<pcl::PointWithScale> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<pcl::PointSurfel> : public boost::true_type { };
+struct xyz_member_get<pcl::PointSurfel> : public boost::true_type { };
 
-// geometry_msgs
+// pcl set
 template<>
-struct xyz_member_getset<geometry_msgs::Point> : public boost::true_type { };
-
-template<>
-struct xyz_member_getset<geometry_msgs::Point32> : public boost::true_type { };
+struct xyz_member_set<pcl::PointXYZ> : public boost::true_type { };
 
 template<>
-struct xyz_member_getset<geometry_msgs::Vector3> : public boost::true_type { };
+struct xyz_member_set<pcl::PointXYZI> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointXYZRGB> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointXYZRGBA> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointNormal> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointXYZRGBNormal> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointXYZL> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointWithViewpoint> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointWithRange> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointWithScale> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<pcl::PointSurfel> : public boost::true_type { };
+
+// geometry_msgs get
+template<>
+struct xyz_member_get<geometry_msgs::Point> : public boost::true_type { };
+
+template<>
+struct xyz_member_get<geometry_msgs::Point32> : public boost::true_type { };
+
+template<>
+struct xyz_member_get<geometry_msgs::Vector3> : public boost::true_type { };
+
+// geometry_msgs set
+template<>
+struct xyz_member_set<geometry_msgs::Point> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<geometry_msgs::Point32> : public boost::true_type { };
+
+template<>
+struct xyz_member_set<geometry_msgs::Vector3> : public boost::true_type { };
 
 // eigen
 template<class Scalar>
@@ -131,11 +181,18 @@ struct xyz_array_get<Scalar *> : public boost::true_type { };
 // raw arrays. a bit dangerous since it matches any array.
 // TODO restrict to numeric types.
 template<class Scalar>
-struct xyz_array_getset<Scalar [3]> : public boost::true_type { };
+struct xyz_array_get<Scalar [3]> : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_array_set<Scalar [3]> : public boost::true_type { };
 
 // opencv
 template<class Scalar>
-struct xyz_member_getset<cv::Point3_<Scalar> > : public boost::true_type { };
+struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
+
+template<class Scalar>
+struct xyz_member_set<cv::Point3_<Scalar> > : public boost::true_type { };
+
 
 } // detail
 
@@ -162,8 +219,8 @@ struct xyz_member_getset<cv::Point3_<Scalar> > : public boost::true_type { };
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src.x;
@@ -175,7 +232,7 @@ Target point_cast(const Source& src,
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
                   typename boost::enable_if< detail::xyz_fun_member_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src.x();
@@ -186,8 +243,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src[0];
@@ -199,19 +256,7 @@ Target point_cast(const Source& src,
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
                   typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
-                 ) {
-  Target tgt;
-  tgt[0] = src[0];
-  tgt[1] = src[1];
-  tgt[2] = src[2];
-  return tgt;
-}
-
-template<typename Target, typename Source>
-Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt.x = src[0];
@@ -222,20 +267,8 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_array_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_member_getset<Target> >::type* dummy2 = 0
-                 ) {
-  Target tgt;
-  tgt.x = src[0];
-  tgt.y = src[1];
-  tgt.z = src[2];
-  return tgt;
-}
-
-template<typename Target, typename Source>
-Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_member_get<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_array_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src.x;
@@ -246,7 +279,7 @@ Target point_cast(const Source& src,
 
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_member_getset<Source> >::type* dummy1 = 0,
+                  typename boost::enable_if< detail::xyz_member_get<Source> >::type* dummy1 = 0,
                   typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src.x, src.y, src.z);
@@ -255,7 +288,7 @@ Target point_cast(const Source& src,
 template<typename Target, typename Source>
 Target point_cast(const Source& src,
                   typename boost::enable_if< detail::xyz_fun_member_get<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_array_getset<Target> >::type* dummy2 = 0
+                  typename boost::enable_if< detail::xyz_array_set<Target> >::type* dummy2 = 0
                  ) {
   Target tgt;
   tgt[0] = src.x();
@@ -270,14 +303,6 @@ Target point_cast(const Source& src,
                   typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
                  ) {
   return Target(src.x(), src.y(), src.z());
-}
-
-template<typename Target, typename Source>
-Target point_cast(const Source& src,
-                  typename boost::enable_if< detail::xyz_array_getset<Source> >::type* dummy1 = 0,
-                  typename boost::enable_if< detail::xyz_ctor_set<Target> >::type* dummy2 = 0
-                 ) {
-  return Target(src[0], src[1], src[2]);
 }
 
 template<typename Target, typename Source>
