@@ -12,7 +12,7 @@
   <url>http://ros.org/wiki/geom_cast</url>
 
   <depend package="roscpp"/>
-  <depend package="nav_msgs"/>
+  <!--<depend package="nav_msgs"/>-->
   <depend package="sensor_msgs"/>
   <depend package="geometry_msgs"/>
   <depend package="pcl"/>
