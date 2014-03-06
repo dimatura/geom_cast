@@ -11,6 +11,17 @@
 
 #include <tf/tf.h>
 
+/**
+ * TODO
+ * include other rotation forms.
+ * btMatrix3x3 (getRPY, getEulerYPR)
+ * btQuaternion (setRPY and setEulerZYX)
+ * note btquaternion takes matrix 3x3
+ * KDL::Rotation?
+ * also see: transformations.py or RVC
+ * also see: tf_conversions
+ */
+
 namespace ca
 {
 
