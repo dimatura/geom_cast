@@ -15,7 +15,7 @@
   <!--<depend package="nav_msgs"/>-->
   <depend package="sensor_msgs"/>
   <depend package="geometry_msgs"/>
-  <depend package="pcl"/>
+  <depend package="pcl_conversions"/>
   <depend package="pcl_ros"/>
   <depend package="opencv2"/>
   <depend package="tf"/>
