@@ -49,7 +49,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_examples src/examples.cpp)
 target_link_libraries(${PROJECT_NAME}_examples
   ${catkin_LIBRARIES}
-  ${OpenCV_LIBS}
+  ${OpenCV_LIBRARIES}
   ${PCL_COMMON_LIBRARIES}
 )
 
@@ -68,6 +68,7 @@ target_link_libraries(${PROJECT_NAME}_examples
 
 if (CATKIN_ENABLE_TESTING)
     catkin_add_gtest(${PROJECT_NAME}_test utest/test.cpp)
+    target_link_libraries(${PROJECT_NAME}_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${PCL_COMMON_LIBRARIES})
 endif()
 
 ## Add gtest based cpp test target and link libraries
