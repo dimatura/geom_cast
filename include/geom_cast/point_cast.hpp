@@ -6,7 +6,10 @@
 
 #include <Eigen/Core>
 
+#ifdef GEOMCAST_PCL
 #include <pcl/point_types.h>
+#endif
+
 
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Point32.h>
@@ -14,7 +17,9 @@
 
 #include <tf/tf.h>
 
+#ifdef GEOMCAST_OPENCV
 #include <opencv2/core/core.hpp>
+#endif
 
 namespace ca
 {
@@ -90,6 +95,7 @@ template<>
 struct xyz_ctor_set<tf::Vector3> : public boost::true_type { };
 
 // pcl get
+#ifdef GEOMCAST_PCL
 template<>
 struct xyz_member_get<pcl::PointXYZ> : public boost::true_type { };
 
@@ -156,6 +162,7 @@ struct xyz_member_set<pcl::PointWithScale> : public boost::true_type { };
 
 template<>
 struct xyz_member_set<pcl::PointSurfel> : public boost::true_type { };
+#endif
 
 // geometry_msgs get
 template<>
@@ -209,6 +216,7 @@ struct xyz_array_get<Scalar [3]> : public boost::true_type { };
 template<class Scalar>
 struct xyz_array_set<Scalar [3]> : public boost::true_type { };
 
+#ifdef GEOMCAST_OPENCV
 // opencv
 template<class Scalar>
 struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
@@ -237,14 +245,16 @@ struct xy_array_get<cv::Vec<Scalar, 2> > : public boost::true_type { };
 
 template<class Scalar>
 struct xy_ctor_set< cv::Vec<Scalar, 2> > : public boost::true_type { };
+#endif
 
+#ifdef GEOMCAST_PCL
 // pcl
 template<>
 struct xy_member_set<pcl::PointXY> : public boost::true_type { };
 
 template<>
 struct xy_member_get<pcl::PointXY> : public boost::true_type { };
-
+#endif
 // eigen
 template<class Scalar>
 struct xyz_ctor_set<Eigen::Matrix<Scalar, 2, 1> > : public boost::true_type { };
