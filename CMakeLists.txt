@@ -40,28 +40,6 @@ include_directories(
   include
 )
 
-## Declare a cpp library
-# add_library(geom_cast
-#   src/${PROJECT_NAME}/geom_cast.cpp
-# )
-
-## Declare a cpp executable
-#add_executable(${PROJECT_NAME}_examples src/examples.cpp)
-#target_link_libraries(${PROJECT_NAME}_examples
-#  ${catkin_LIBRARIES}
-#  ${OpenCV_LIBRARIES}
-#  ${PCL_COMMON_LIBRARIES}
-#)
-
-## Add cmake target dependencies of the executable/library
-## as an example, message headers may need to be generated before nodes
-# add_dependencies(geom_cast_node geom_cast_generate_messages_cpp)
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(geom_cast_node
-#   ${catkin_LIBRARIES}
-# )
-
 #############
 ## Testing ##
 #############
