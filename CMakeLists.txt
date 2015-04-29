@@ -10,33 +10,44 @@ find_package(catkin REQUIRED COMPONENTS
   cmake_modules
 )
 
-## System dependencies are found with CMake's conventions
-#find_package(Boost REQUIRED)
-#find_package(OpenCV REQUIRED)
-#find_package(PCL REQUIRED COMPONENTS common)
+# need boost for metatemplate stuff
+find_package(Boost REQUIRED)
 find_package(Eigen REQUIRED)
+
+# these are optional
+find_package(OpenCV)
+find_package(PCL)
 
 # catkin_python_setup()
 
+if (PCL_FOUND)
+    add_definitions(-DGEOMCAST_USE_PCL)
+endif(PCL_FOUND)
+
+if (OpenCV_FOUND)
+    add_definitions(-DGEOMCAST_USE_OPENCV)
+endif(OpenCV_FOUND)
+
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES
-#  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp sensor_msgs tf
+  LIBRARIES
+  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp sensor_msgs tf
   DEPENDS Eigen Boost
+  CFG_EXTRAS config_extras.cmake
 )
 
 ###########
 ## Build ##
 ###########
 
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-# include_directories(include)
+# TODO I think it's harmless to have include's
+# if they are not present
 include_directories(
   ${catkin_INCLUDE_DIRS}
-#  ${PCL_COMMON_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
-#  ${Boost_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
   include
 )
 

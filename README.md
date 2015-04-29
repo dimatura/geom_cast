@@ -10,7 +10,7 @@ Supports Eigen, tf, pcl, geometry_msgs and OpenCV points.
 
 # TODO
 
-- Use cmake to adapt to unavailability of dependencies
 - More types: std::vector, KDL, std::array
 - Types with timestamps?
 - Extensibility?
+- Anything new for tf2?

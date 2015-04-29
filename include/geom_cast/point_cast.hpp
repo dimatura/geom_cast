@@ -8,7 +8,6 @@
  *
  **@=*/
 
-
 #ifndef POINT_CAST_HPP_EGWZH108
 #define POINT_CAST_HPP_EGWZH108
 
@@ -17,18 +16,18 @@
 
 #include <Eigen/Core>
 
-#ifdef GEOMCAST_PCL
-#include <pcl/point_types.h>
-#endif
-
-
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Point32.h>
 #include <geometry_msgs/Vector3.h>
 
 #include <tf/tf.h>
 
-#ifdef GEOMCAST_OPENCV
+//#define GEOMCAST_USE_PCL
+
+#ifdef GEOMCAST_USE_PCL
+#include <pcl/point_types.h>
+#endif
+#ifdef GEOMCAST_USE_OPENCV
 #include <opencv2/core/core.hpp>
 #endif
 
@@ -106,7 +105,7 @@ template<>
 struct xyz_ctor_set<tf::Vector3> : public boost::true_type { };
 
 // pcl get
-#ifdef GEOMCAST_PCL
+#ifdef GEOMCAST_USE_PCL
 template<>
 struct xyz_member_get<pcl::PointXYZ> : public boost::true_type { };
 
@@ -227,7 +226,7 @@ struct xyz_array_get<Scalar [3]> : public boost::true_type { };
 template<class Scalar>
 struct xyz_array_set<Scalar [3]> : public boost::true_type { };
 
-#ifdef GEOMCAST_OPENCV
+#ifdef GEOMCAST_USE_OPENCV
 // opencv
 template<class Scalar>
 struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
@@ -258,7 +257,7 @@ template<class Scalar>
 struct xy_ctor_set< cv::Vec<Scalar, 2> > : public boost::true_type { };
 #endif
 
-#ifdef GEOMCAST_PCL
+#ifdef GEOMCAST_USE_PCL
 // pcl
 template<>
 struct xy_member_set<pcl::PointXY> : public boost::true_type { };
@@ -482,6 +481,7 @@ Target point_cast(const Source& src,
                   typename boost::enable_if< detail::xy_ctor_set<Target> >::type* dummy2 = 0) {
   return Target(src.x(), src.y());
 }
+
 #if 0
 pcl::PointXYZ vector3f_to_point_xyz(Eigen::Vector3f ep) {
   pcl::PointXYZ p;
