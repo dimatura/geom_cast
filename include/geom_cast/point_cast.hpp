@@ -22,15 +22,6 @@
 
 #include <tf/tf.h>
 
-//#define GEOMCAST_USE_PCL
-
-#ifdef GEOMCAST_USE_PCL
-#include <pcl/point_types.h>
-#endif
-#ifdef GEOMCAST_USE_OPENCV
-#include <opencv2/core/core.hpp>
-#endif
-
 namespace ca
 {
 
@@ -104,76 +95,6 @@ struct xyz_fun_member_get<tf::Vector3> : public boost::true_type { };
 template<>
 struct xyz_ctor_set<tf::Vector3> : public boost::true_type { };
 
-// pcl get
-#ifdef GEOMCAST_USE_PCL
-template<>
-struct xyz_member_get<pcl::PointXYZ> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointXYZI> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointXYZRGB> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointXYZRGBA> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointNormal> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointXYZRGBNormal> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointXYZL> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointWithViewpoint> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointWithRange> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointWithScale> : public boost::true_type { };
-
-template<>
-struct xyz_member_get<pcl::PointSurfel> : public boost::true_type { };
-
-// pcl set
-template<>
-struct xyz_member_set<pcl::PointXYZ> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointXYZI> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointXYZRGB> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointXYZRGBA> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointNormal> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointXYZRGBNormal> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointXYZL> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointWithViewpoint> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointWithRange> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointWithScale> : public boost::true_type { };
-
-template<>
-struct xyz_member_set<pcl::PointSurfel> : public boost::true_type { };
-#endif
-
 // geometry_msgs get
 template<>
 struct xyz_member_get<geometry_msgs::Point> : public boost::true_type { };
@@ -226,45 +147,6 @@ struct xyz_array_get<Scalar [3]> : public boost::true_type { };
 template<class Scalar>
 struct xyz_array_set<Scalar [3]> : public boost::true_type { };
 
-#ifdef GEOMCAST_USE_OPENCV
-// opencv
-template<class Scalar>
-struct xyz_member_get<cv::Point3_<Scalar> > : public boost::true_type { };
-
-template<class Scalar>
-struct xyz_member_set<cv::Point3_<Scalar> > : public boost::true_type { };
-
-template<class Scalar>
-struct xyz_array_get< cv::Vec<Scalar, 3> > : public boost::true_type { };
-
-template<class Scalar>
-struct xyz_ctor_set< cv::Vec<Scalar, 3> > : public boost::true_type { };
-
-///////////////////////////////////////////////////////////////////////////////
-// 2D trait impl
-
-// opencv
-template<class Scalar>
-struct xy_member_get<cv::Point_<Scalar> > : public boost::true_type { };
-
-template<class Scalar>
-struct xy_member_set<cv::Point_<Scalar> > : public boost::true_type { };
-
-template<class Scalar>
-struct xy_array_get<cv::Vec<Scalar, 2> > : public boost::true_type { };
-
-template<class Scalar>
-struct xy_ctor_set< cv::Vec<Scalar, 2> > : public boost::true_type { };
-#endif
-
-#ifdef GEOMCAST_USE_PCL
-// pcl
-template<>
-struct xy_member_set<pcl::PointXY> : public boost::true_type { };
-
-template<>
-struct xy_member_get<pcl::PointXY> : public boost::true_type { };
-#endif
 // eigen
 template<class Scalar>
 struct xyz_ctor_set<Eigen::Matrix<Scalar, 2, 1> > : public boost::true_type { };
@@ -277,7 +159,6 @@ struct xyz_ctor_set<Eigen::Map<const Eigen::Matrix<Scalar, 2, 1> > > : public bo
 
 template<class Scalar>
 struct xyz_fun_member_get<Eigen::Map<const Eigen::Matrix<Scalar, 2, 1> > > : public boost::true_type { };
-
 
 } // detail
 
