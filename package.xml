@@ -3,14 +3,13 @@
   <name>geom_cast</name>
   <version>0.0.0</version>
   <description>
-     Clean conversion between different point and rotation types used throughout ROS.
-     Conversion is type-safe and has NO performance penalty relative to manual conversion.
-     Supports Eigen, tf, pcl, geometry_msgs and OpenCV points.
+    Clean conversion between different point and rotation types used throughout ROS.
+    Conversion is type-safe and has NO performance penalty relative to manual conversion.
   </description>
 
   <maintainer email="dimatura@cmu.edu">Daniel Maturana</maintainer>
 
-  <license>Carnegie Mellon University 2015</license>
+  <license>BSD</license>
 
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
