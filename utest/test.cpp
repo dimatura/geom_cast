@@ -1,3 +1,10 @@
+/*
+* Copyright (c) 2016 Carnegie Mellon University, Author <dimatura@cmu.edu>
+*
+* For License information please see the LICENSE file in the root directory.
+*
+*/
+
 /**
  * @author  Daniel Maturana
  * @year    2015
