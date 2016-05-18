@@ -5,16 +5,6 @@
 *
 */
 
-/**
- * @author  Daniel Maturana
- * @year    2015
- *
- * @attention Copyright (c) 2015
- * @attention Carnegie Mellon University
- * @attention All rights reserved.
- *
- **@=*/
-
 
 #include <boost/foreach.hpp>
 #include <boost/assign/std/vector.hpp>

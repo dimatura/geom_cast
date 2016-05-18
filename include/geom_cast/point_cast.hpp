@@ -1,12 +1,10 @@
 /**
- * @author  Daniel Maturana
- * @year    2015
+ * Copyright (c) 2015 Carnegie Mellon University, Daniel Maturana <dimatura@cmu.edu>
  *
- * @attention Copyright (c) 2015
- * @attention Carnegie Mellon University
- * @attention All rights reserved.
+ * For License information please see the LICENSE file in the root directory.
  *
- **@=*/
+ */
+
 
 #ifndef POINT_CAST_HPP_EGWZH108
 #define POINT_CAST_HPP_EGWZH108
