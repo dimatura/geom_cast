@@ -13,7 +13,7 @@ See also: `geom_cast_extra`, with additional conversions (OpenCV, pcl).
 
 Examples in `src/examples.cpp` and `utest/test.cpp`.
 
-{{{cpp
+```cpp
 
 #include "geom_cast/rot_cast.hpp"
 #include "geom_cast/point_cast.hpp"
@@ -22,7 +22,7 @@ Eigen::Vector3f foo(2, 8, 0);
 tf::Vector3 bar = ca::point_cast<tf::Vector3>(foo);
 Eigen::Quaterniond q1(1, 0, 0, 0);
 geometry_msgs::Quaternion q2 = ca::rot_cast<geometry_msgs::Quaternion>(q1);
-}}}
+```
 
 
 
