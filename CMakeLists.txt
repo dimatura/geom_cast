@@ -15,6 +15,7 @@ find_package(Boost REQUIRED)
 find_package(Eigen REQUIRED)
 
 # catkin_python_setup()
+set(CMAKE_BUILD_TYPE Release)
 
 catkin_package(
   INCLUDE_DIRS include
